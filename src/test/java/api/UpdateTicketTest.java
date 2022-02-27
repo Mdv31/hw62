@@ -16,7 +16,7 @@ public class UpdateTicketTest extends BaseTest {
         Ticket ticket = BaseTest.buildNewTicket(Status.CLOSED,2);
         Ticket newTicket = createTicket(ticket);
         Ticket actual = updateTicketNegative(newTicket);
-        Assert.assertNotEquals(actual.getStatus(),4);
+        Assert.assertEquals(actual.getStatus(),4);
     }
 
     private Ticket updateTicketNegative(Ticket ticket) {
