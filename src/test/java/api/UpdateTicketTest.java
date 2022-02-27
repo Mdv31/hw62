@@ -26,7 +26,7 @@ public class UpdateTicketTest extends BaseTest {
                 .pathParam("id", ticket.getId())
                 .body(ticket)
                 .when()
-                .put("/api/tickets/{id}")
+                .patch("/api/tickets/{id}")
                 .then()
                 .statusCode(200)//422
                 .extract()
