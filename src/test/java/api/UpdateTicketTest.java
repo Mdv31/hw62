@@ -15,11 +15,8 @@ public class UpdateTicketTest extends BaseTest {
         // todo: создать тикет со статусом Closed, затем обновить тикет и проверить сообщение об ошибке (негативный сценарий)
         Ticket ticket = BaseTest.buildNewTicket(Status.CLOSED,2);
         Ticket newTicket = createTicket(ticket);
-        int a1=newTicket.hashCode();
         Ticket actual = updateTicketNegative(newTicket);
-        System.out.println(a1);
-        System.out.println(actual.hashCode());
-        Assert.assertNotEquals(a1,actual.hashCode());
+        Assert.assertEquals(actual.getStatus(),4);
     }
 
     private Ticket updateTicketNegative(Ticket ticket) {
