@@ -19,7 +19,7 @@ public class UpdateTicketTest extends BaseTest {
         Ticket actual = updateTicketNegative(newTicket);
         System.out.println(a1);
         System.out.println(actual.hashCode());
-        Assert.assertNotEquals(a1,actual.hashCode());
+        Assert.assertEquals(a1,actual.hashCode());
     }
 
     private Ticket updateTicketNegative(Ticket ticket) {
