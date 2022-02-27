@@ -11,7 +11,7 @@ public class Ticket {
     // todo: serialized поля, геттеры и сеттеры
     int priority;
     int id;
-    String title="Создан тестовый запрос.";
+    String title="Тестовый запрос";
     int queue=1;
     int status;
 

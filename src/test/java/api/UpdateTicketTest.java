@@ -13,12 +13,13 @@ public class UpdateTicketTest extends BaseTest {
     @Test
     public void updateTicketTest() {
         // todo: создать тикет со статусом Closed, затем обновить тикет и проверить сообщение об ошибке (негативный сценарий)
-        Ticket ticket = BaseTest.buildNewTicket(Status.OPEN,2);
+        Ticket ticket = BaseTest.buildNewTicket(Status.CLOSED,2);
         Ticket newTicket = createTicket(ticket);
+        int a1=newTicket.hashCode();
         Ticket actual = updateTicketNegative(newTicket);
-        //System.out.println(newTicket.hashCode());
-        //System.out.println(actual.hashCode());
-        Assert.assertEquals(newTicket.hashCode(),actual.hashCode());
+        System.out.println(a1);
+        System.out.println(actual.hashCode());
+        Assert.assertNotEquals(a1,actual.hashCode());
     }
 
     private Ticket updateTicketNegative(Ticket ticket) {
@@ -30,7 +31,7 @@ public class UpdateTicketTest extends BaseTest {
                 .when()
                 .put("/api/tickets/{id}")
                 .then()
-                .statusCode(422)//422
+                .statusCode(200)//422
                 .extract()
                 .body()
                 .as(Ticket.class);

@@ -41,10 +41,8 @@ public abstract class BaseTest {
     protected static Ticket buildNewTicket(Status status, int priority) {
         // todo: создать объект с тестовыми данными
         Ticket ticket = new Ticket();
-        //ticket.setTitle("Создан тестовый запрос.");
         ticket.setPriority(priority);
         ticket.setStatus(status.getCode());
-        //ticket.setQueue(1);
         return ticket;
     }
 
