@@ -1,5 +1,6 @@
 package api;
 
+import model.AuthenticationToken;
 import model.Status;
 import model.Ticket;
 import org.testng.Assert;
@@ -23,8 +24,10 @@ public class CreateTicketTest extends BaseTest {
 
     protected Ticket getTicket(int id) {
         // todo: отправить HTTP запрос на получение тикета по его id
+        AuthenticationToken authenticationToken=authenticate();
         return given()
                 .pathParam("id", id)
+                .header("Authorization","Token "+authenticationToken.getToken())
                 .when()
                 .get("/api/tickets/{id}")
                 .then()

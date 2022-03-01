@@ -1,5 +1,6 @@
 package api;
 
+import model.AuthenticationToken;
 import model.Status;
 import model.Ticket;
 import org.testng.Assert;
@@ -22,11 +23,13 @@ public class UpdateTicketTest extends BaseTest {
     private Ticket updateTicketNegative(Ticket ticket) {
         // todo: отправить HTTP запрос для обновления данных тикета и сразу же проверить статус код (должен соответствовать ошибке)
         ticket.setStatus(1);
+        AuthenticationToken authenticationToken=authenticate();
         return given()
                 .pathParam("id", ticket.getId())
+                .header("Authorization","Token "+authenticationToken.getToken())
                 .body(ticket)
                 .when()
-                .patch("/api/tickets/{id}")
+                .put("/api/tickets/{id}")
                 .then()
                 .statusCode(200)//422
                 .extract()
