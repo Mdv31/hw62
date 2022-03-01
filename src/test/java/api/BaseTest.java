@@ -4,8 +4,10 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import model.AuthenticationToken;
 import model.Status;
 import model.Ticket;
+import model.Userpass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.IOException;
@@ -28,13 +30,15 @@ public abstract class BaseTest {
         }
 
         // todo: подготовить глобальные преднастройки для запросов
-        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
-        requestSpecBuilder.setBaseUri(baseUri);
-        requestSpecBuilder.addHeader("api_key", "Mdv31");
-        requestSpecBuilder.setAccept(ContentType.JSON);
-        requestSpecBuilder.setContentType(ContentType.JSON);
-        RestAssured.requestSpecification = requestSpecBuilder // дополнительная инструкция полного логгирования для RestAssured
-                .build();
+
+
+        RestAssured.requestSpecification = new RequestSpecBuilder()
+                    .setBaseUri(baseUri)
+                    .addHeader("api_key", "Mdv31")
+                    .setAccept(ContentType.JSON)
+                    .setContentType(ContentType.JSON)
+                    .build();
+
         RestAssured.filters(new ResponseLoggingFilter());
     }
 
@@ -48,14 +52,40 @@ public abstract class BaseTest {
 
     protected Ticket createTicket(Ticket ticket) {
         // todo: отправить HTTP запрос для создания тикета
+        AuthenticationToken authenticationToken=authenticate();
+
+        //System.out.println(authenticationToken.getToken());
         return given()
+                .header("Authorization","Basic "+authenticationToken.getToken())
                 .body(ticket)
                 .when()
-                .post("/api/tickets/")
+                .post("/api/tickets")
                 .then()
                 .statusCode(201)
                 .extract()
                 .body()
                 .as(Ticket.class);
+    }
+
+    public AuthenticationToken authenticate() {
+
+        Userpass userpass = new Userpass();
+        userpass.setUsername("admin");
+        userpass.setPassword("adminat");
+
+        AuthenticationToken authenticationToken = given()
+                        .accept("application/json")
+                        .contentType("application/json")
+                        .body(userpass)
+                        .expect()
+                        .statusCode(200)
+                        .when()
+                        .post("/api/login")
+                        .then()
+                        .log().all()
+                        .extract()
+                        .body().as(AuthenticationToken.class);
+
+        return authenticationToken;
     }
 }
